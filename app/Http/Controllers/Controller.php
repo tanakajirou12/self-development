@@ -11,34 +11,55 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    public function index()
+    public function apiSearch($title)
     {
-        $keyword = '';
-    $response = null;
-
-    $url = 'https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706';
-    
-    // applicationIdの 'xxxxx....' は取得したアプリIDに書き換える
-    $params = [
-        'format' => 'json',
-        'applicationId' => '1084521773457364307',
-        'hits' => 15,
-        'imageFlag' => 1
-    ];
-    if (array_key_exists('keyword', $_POST)) {
-        $keyword = $_POST['keyword'];
-        $response_json = execute_api($url, $params, $keyword);
-        $response = json_decode($response_json);
         
-        return view('welcome');
-    }
+        //$title = '';
+        $response = null;
     
-    function execute_api($url, $params, $keyword) {
+        $url = 'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404';
+        
+        // applicationIdの 'xxxxx....' は取得したアプリIDに書き換える
+        $params = [
+            'format' => 'json',
+            'applicationId' => '1080315934315089119',
+            //'hits' => 15,
+            //'imageFlag' => 1
+        ];
+    
+    
+    
+        //if (array_key_exists('title', $_GET)) {
+            //$keyword = $_POST['keyword'];
+            $response_json = $this->execute_api($url, $params, $title);
+            $response = json_decode($response_json);
+            
+            
+        //}
+        
+        
+        return $response;
+    
+    }
+    function execute_api($url, $params, $title) {
         $query = http_build_query($params, "", "&");
-        $search_url = $url . '?' . $query . '&keyword=' . $keyword;
+        $search_url = $url . '?' . $query . '&title=' . $title;
         
         return file_get_contents($search_url);
     
     }
+    
+    
+    
+    public function counts($user) {
+        $count_developments = $user->developments()->count();
+        $count_followings = $user->followings()->count();
+        $count_followers = $user->followers()->count();
+
+        return [
+            'count_developments' => $count_developments,
+            'count_followings' => $count_followings,
+            'count_followers' => $count_followers,
+        ];
     }
 }
