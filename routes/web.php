@@ -28,8 +28,18 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+        Route::get('favorites', 'UsersController@favorites')->name('users.favorites');
     });
     
-    Route::resource('developments', 'DevelopmentsController', ['only' => ['store', 'destroy']]);
+    Route::group(['prefix' => 'developments/{id}'], function () {
+        Route::post('favorite', 'FavoritesController@store')->name('favorites.favorite');
+        Route::delete('unfavorite', 'FavoritesController@destroy')->name('favorites.unfavorite');
+    });
+    
+    //Route::resource('developments', 'DevelopmentsController', ['only' => ['store', 'destroy']]);
+    Route::resource('developments', 'DevelopmentsController');
     Route::get('search', 'UsersController@search')->name('search');
 });
+
+Route::get('searches', 'SearchesController@result')->name('searches.get');
+Route::post('searches', 'SearchesController@store')->name('searches.post');

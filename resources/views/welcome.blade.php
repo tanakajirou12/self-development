@@ -4,7 +4,7 @@
 　　@if (Auth::check())
         <body class="mt-4">
         <div class="container">
-            <h1>本の検索</h1>
+            <h2>本を検索してコメントを投稿してください</h2>
             
             <div class="row">
                 <div class="col-6">
@@ -21,28 +21,21 @@
             <hr />
             
             
-        </div>
         
-        <div class="row">
+        
+        　　<div class="row">
             
-            <div class="col-sm-8">
-                @if (Auth::id() == $user->id)
-                    {!! Form::open(['route' => 'developments.store']) !!}
-                        <div class="form-group">
-                            {!! Form::textarea('content', old('content'), ['class' => 'form-control', 'rows' => '2']) !!}
-                            {!! Form::submit('Post', ['class' => 'btn btn-primary btn-block']) !!}
-                        </div>
-                    {!! Form::close() !!}
-                @endif
-                @if (count($developments) > 0)
-                    @include('developments.developments', ['developments' => $developments])
-                @endif
-            </div>
+            　　<div class="col-sm-12">
+                　　@if (count($developments) > 0)
+                    　　@include('developments.developments', ['developments' => $developments])
+                　　@endif
+            　　</div>
+        　　</div>
         </div>
     @else
     　　<div class="center jumbotron">
         　　<div class="text-center">
-            　　<h1>Welcome to the Self-development</h1>
+            　　<h1>実生活で役に立った本について共有するサイト</h1>
             　　{!! link_to_route('signup.get', 'サインアップ', [], ['class' => 'btn btn-lg btn-primary']) !!}
         　　</div>
     　　</div>

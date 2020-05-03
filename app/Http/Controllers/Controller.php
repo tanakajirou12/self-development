@@ -23,7 +23,7 @@ class Controller extends BaseController
         $params = [
             'format' => 'json',
             'applicationId' => '1080315934315089119',
-            //'hits' => 15,
+            'hits' => 30,
             //'imageFlag' => 1
         ];
     
@@ -55,11 +55,13 @@ class Controller extends BaseController
         $count_developments = $user->developments()->count();
         $count_followings = $user->followings()->count();
         $count_followers = $user->followers()->count();
+        $count_favorites = $user->favorites()->count();
 
         return [
             'count_developments' => $count_developments,
             'count_followings' => $count_followings,
             'count_followers' => $count_followers,
+            'count_favorites' => $count_favorites,
         ];
     }
 }

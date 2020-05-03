@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Development;
 
 class DevelopmentsController extends Controller
 {
@@ -11,7 +12,7 @@ class DevelopmentsController extends Controller
         $data = [];
         if (\Auth::check()) {
             $user = \Auth::user();
-            $developments = $user->developments()->orderBy('created_at', 'desc')->paginate(10);
+            $developments = $user->feed_developments()->orderBy('created_at', 'desc')->paginate(10);
             
             $data = [
                 'user' => $user,
@@ -25,14 +26,20 @@ class DevelopmentsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'content' => 'required|max:191',
+            'title' => 'required|max:191',
+            'content1' => 'required|max:191',
+            'content2' => 'required|max:191',
         ]);
 
         $request->user()->developments()->create([
-            'content' => $request->content,
+            'title' => $request->title,
+            'content1' => $request->content1,
+            'content2' => $request->content2,
         ]);
-
-        return back();
+        
+        
+        
+        return redirect('/');
     }
     
     public function destroy($id)
@@ -44,5 +51,51 @@ class DevelopmentsController extends Controller
         }
 
         return back();
+    }
+    
+    public function create()
+    {
+        $development = new Development;
+
+        return view('developments.create', [
+            'development' => $development,
+        ]);
+    }
+    
+    public function show()
+    {
+        $development = Development::find($id);
+
+        return view('developments.show', [
+            'development' => $development,
+        ]);
+    }
+    
+    public function edit($id)
+    {
+        $development = Development::find($id);
+
+        return view('developments.edit', [
+            'development' => $development,
+        ]);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:191',
+            'content1' => 'required|max:191',
+            'content2' => 'required|max:191',
+        ]);
+        
+        $development = Development::find($id);
+        $development->title = $request->title;
+        $development->content1 = $request->content1;
+        $development->content2 = $request->content2;
+        $development->save();
+
+        return view('developments.show', [
+            'development' => $development,
+        ]);
     }
 }

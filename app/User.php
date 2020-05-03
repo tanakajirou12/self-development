@@ -80,4 +80,47 @@ class User extends Authenticatable
     {
         return $this->followings()->where('follow_id', $userId)->exists();
     }
+    
+    public function feed_developments()
+    {
+        $follow_user_ids = $this->followings()->pluck('users.id')->toArray();
+        $follow_user_ids[] = $this->id;
+        return Development::whereIn('user_id', $follow_user_ids);
+    }
+    
+     public function favorites()
+    {
+        return $this->belongsToMany(Development::class, 'favorites', 'user_id', 'development_id')->withTimestamps();
+    }
+    
+    public function favorite($development_id)
+    {
+        $exist = $this->is_favorite($development_id);
+        
+        
+        if ($exist) {
+            return false;
+        } else {
+            $this->favorites()->attach($development_id);
+            return true;
+        }
+    }
+    
+    public function unfavorite($development_id)
+    {
+        $exist = $this->is_favorite($development_id);
+        
+        
+        if ($exist) {
+            $this->favorites()->detach($development_id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function is_favorite($development_id)
+    {
+        return $this->favorites()->where('development_id', $development_id)->exists();
+    }
 }

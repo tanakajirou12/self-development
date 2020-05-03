@@ -39,13 +39,13 @@ class UsersController extends Controller
         ]);
         
         $users = User::orderBy('id', 'desc')->paginate(10);
-        $ret = $this->apiSearch($request->title);
+        $search = $this->apiSearch($request->title);
         
-        //dd($ret);
+        
         
         return view('users.search', [
             'users' => $users,
-            'ret' => $ret,
+            'search' => $search,
             'title' => $request->title,
         ]);
     }
@@ -78,5 +78,21 @@ class UsersController extends Controller
         $data += $this->counts($user);
 
         return view('users.followers', $data);
+    }
+    
+    public function favorites($id)
+    {
+        
+        $user = User::find($id);
+            $developments = $user->favorites()->orderBy('created_at', 'desc')->paginate(10);
+            
+            $data = [
+                'user' => $user,
+                'developments' => $developments,
+            ];
+            
+            $data += $this->counts($user);
+        
+        return view('users.favorites', $data);
     }
 }

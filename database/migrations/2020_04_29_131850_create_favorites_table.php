@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDevelopmentsTable extends Migration
+class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateDevelopmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('developments', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->string('title');
-            $table->string('content1');
-            $table->string('content2');
+            $table->integer('development_id')->unsigned()->index();
             $table->timestamps();
             
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('development_id')->references('id')->on('developments')->onDelete('cascade');
             
+            $table->unique(['user_id', 'development_id']);
         });
     }
 
@@ -33,6 +33,6 @@ class CreateDevelopmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('developments');
+        Schema::dropIfExists('favorites');
     }
 }

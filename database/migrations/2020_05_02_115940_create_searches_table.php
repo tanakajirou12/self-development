@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDevelopmentsTable extends Migration
+class CreateSearchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,10 @@ class CreateDevelopmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('developments', function (Blueprint $table) {
+        Schema::create('searches', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
-            $table->string('title');
-            $table->string('content1');
-            $table->string('content2');
+            $table->string('item');
             $table->timestamps();
-            
-            $table->foreign('user_id')->references('id')->on('users');
-            
         });
     }
 
@@ -33,6 +27,6 @@ class CreateDevelopmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('developments');
+        Schema::dropIfExists('searches');
     }
 }
