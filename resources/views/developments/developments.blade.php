@@ -14,7 +14,7 @@
                 <div>
                     @if (Auth::id() == $development->user_id)
                         {!! Form::open(['route' => ['developments.destroy', $development->id], 'method' => 'delete']) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                            {!! Form::submit('削除する', ['class' => 'btn btn-danger btn-sm']) !!}
                         {!! Form::close() !!}
                     @endif
                     @include('favorites.favorites_button', ['development' => $development])

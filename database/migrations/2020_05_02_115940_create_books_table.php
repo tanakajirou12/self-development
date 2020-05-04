@@ -13,10 +13,14 @@ class CreateSearchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('searches', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('item');
+            $table->integer('developments_id')->unsigned()->index();
+            $table->string('title');
+            $table->char('isbn',13);
             $table->timestamps();
+            
+            $table->foreign('developments_id')->references('id')->on('developments');
         });
     }
 
@@ -27,6 +31,6 @@ class CreateSearchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('searches');
+        Schema::dropIfExists('books');
     }
 }

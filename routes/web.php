@@ -41,5 +41,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('search', 'UsersController@search')->name('search');
 });
 
-Route::get('searches', 'SearchesController@result')->name('searches.get');
-Route::post('searches', 'SearchesController@store')->name('searches.post');
+Route::get('books', 'BooksController@')->name('books.get');
+Route::post('books', 'BooksController@store')->name('books.post');

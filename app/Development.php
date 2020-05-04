@@ -13,8 +13,8 @@ class Development extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function search()
+    public function book()
     {
-        return $this->belongsTo(Search::class);
+        return $this->belongsTo(Book::class);
     }
 }
